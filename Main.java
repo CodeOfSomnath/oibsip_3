@@ -22,6 +22,7 @@ public class Main {
             if (atm.login()) {
                 while (true) {
                     prompt();
+                    System.out.println("Enter your option(1-5):");
                     option = sc.nextInt();
                     if (option == 1) {
                         // history
@@ -35,10 +36,11 @@ public class Main {
                         atm.dipositBalance();
                     }
                     else if (option == 4) {
-                        atm.transferBalance();;
+                        atm.transferBalance();
                     }
                     else if (option == 5) {
-                        atm.logout();
+                        atm.flush();
+                        System.out.println("Goodbye! Thank you for using.");
                         break;
                     }
                     else {
@@ -46,6 +48,7 @@ public class Main {
                     }
                 }
             } else {
+                atm.flush();
                 System.out.println("Unable to login, username or password is incorrect.");
             }
         }

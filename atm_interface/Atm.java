@@ -10,6 +10,7 @@ public class Atm {
     public Atm() {
         this.bank = new Bank();
         sc = new Scanner(System.in);
+    
     }
 
     public boolean login() {
@@ -20,6 +21,10 @@ public class Atm {
         return bank.authUser(name, pass);
     }
 
+    public void flush() {
+        sc.nextLine(); // flushing all input
+    }
+
     public void showHistory() {
         User user = bank.getCurrentUser();
         ArrayList<String> history = user.getTransactionsHistory();
@@ -28,29 +33,34 @@ public class Atm {
         }
     }
 
-    public void logout() {
-        sc.close();
-    }
-
     public void dipositBalance() {
         User user = bank.getCurrentUser();
         System.out.println("Enter the amount: ");
-        int balance = sc.nextInt();
+        double balance = sc.nextDouble();
         user.diposit(balance);
         System.out.println("diposit succesfull.");
-        System.out.printf("Current Balance: ₹%d\n", user.getBalance());
+        System.out.printf("Current Balance: ₹%.2f\n", user.getBalance());
     }
 
     public void transferBalance() {
+        User currentUser = bank.getCurrentUser();
         System.out.println("Enter the reciver uid:");
         int reciverUid = sc.nextInt();
+        if (reciverUid == currentUser.getUid()) {
+            System.out.println("Same user transfer is not allowed.");
+        }
         User reciver = bank.getByUid(reciverUid);
-        User currentUser = bank.getCurrentUser();
+        if (reciver == null) {
+            System.out.printf("Unable to find user with id %d\n", reciverUid);
+            return;
+        }
+
+        
         System.out.println("Enter the amount: ");
-        int balance = sc.nextInt();
+        double balance = sc.nextDouble();
         if (balance <= currentUser.getBalance()) {
-            currentUser.widraw(balance);
-            reciver.diposit(balance);
+            currentUser.transfer(balance, reciver);
+            System.out.printf("Transfer successful, new balance: $%.2f\n", currentUser.getBalance());
         } else {
             System.out.println("Insufficient Balance.");
         }
@@ -59,12 +69,12 @@ public class Atm {
     public void widrawBalance() {
         User user = bank.getCurrentUser();
         System.out.println("Enter the amount: ");
-        int balance = sc.nextInt();
+        double balance = sc.nextDouble();
 
         if (balance <= user.getBalance()) {
             user.widraw(balance);
             System.out.println("widraw succesfull.");
-            System.out.printf("Current Balance: ₹%d\n", user.getBalance());
+            System.out.printf("Current Balance: ₹%.2f\n", user.getBalance());
         } else {
             System.out.println("Insufficient Balance.");
         }

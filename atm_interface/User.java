@@ -5,23 +5,25 @@ import java.util.ArrayList;
 public class User {
     private String name;
     private int password;
-    private int balance;
+    private double balance;
     private int uid;
     
 
     private ArrayList<String> tHistory;
 
 
-    public User(String name, int password, int uid) {
+    public User(int uid, String name, int password, int initBalance) {
         this.name = name;
         this.password = password;
         this.uid = uid;
+        this.balance = initBalance;
+        tHistory = new ArrayList<>();
     }
     public int getUid() {
         return uid;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return this.balance;
     }
 
@@ -30,18 +32,20 @@ public class User {
     }
 
 
-    public void transfer() {
-        
-    }
-
-    public void widraw(int amount) {
+    public void transfer(double amount, User reciver) {
         this.balance = this.balance - amount;
-        this.tHistory.add(String.format("Withdrawal: -₹%d  New balance: ₹%d", amount, balance));
+        reciver.diposit(amount);
+        this.tHistory.add(String.format("Transfer of ₹%.2f to uid %d  New balance: ₹%.2f", amount, reciver.getUid(), this.getBalance()));
     }
 
-    public void diposit(int amount) {
+    public void widraw(double amount) {
+        this.balance = this.balance - amount;
+        this.tHistory.add(String.format("Withdrawal: -₹%.2f  New balance: ₹%.2f", amount, balance));
+    }
+
+    public void diposit(double amount) {
         this.balance = this.balance + amount;
-        this.tHistory.add(String.format("Diposit: +₹%d  New balance: ₹%d", amount, balance));
+        this.tHistory.add(String.format("Diposit: +₹%.2f  New balance: ₹%.2f", amount, balance));
     }
 
 

@@ -11,9 +11,9 @@ public class Bank {
     public Bank() {
         // creating some test user
         this.bankUsers = new ArrayList<>();
-        this.bankUsers.add(new User("Somnath", 9876,1));
-        this.bankUsers.add(new User("Rohan", 8956, 2));
-        this.bankUsers.add(new User("Rahul", 4564, 3));
+        this.bankUsers.add(new User(1, "Somnath", 9876, 1000));
+        this.bankUsers.add(new User(2, "Rohan", 8956, 500));
+        this.bankUsers.add(new User(3, "Rahul", 4564, 700));
     }
 
     public boolean authUser(String name, int pass) {
